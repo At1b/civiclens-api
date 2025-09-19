@@ -17,7 +17,7 @@ public class AiCategorizationService {
     // We'll use a popular zero-shot classification model
     private static final String MODEL_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli";
 
-    public AiCategorizationService(WebClient.Builder webClientBuilder, @Value("${huggingface.api.key}") String huggingFaceApiKey) {
+    public AiCategorizationService(WebClient.Builder webClientBuilder, @Value("${HUGGINGFACE_API_KEY}") String huggingFaceApiKey) {
         this.huggingFaceApiKey = huggingFaceApiKey;
         this.webClient = webClientBuilder.baseUrl(MODEL_URL).build();
     }

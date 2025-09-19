@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
-    @Value("${aws.s3.bucketName}")
+    @Value("${AWS_S3_BUCKET_NAME}")
     private String bucketName;
 
     @Autowired

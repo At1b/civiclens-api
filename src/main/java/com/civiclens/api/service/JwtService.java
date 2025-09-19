@@ -21,7 +21,7 @@ public class JwtService {
     private final String secretKey; // Changed from static final
 
     // Constructor to inject the secret key from application.properties
-    public JwtService(@Value("${jwt.secret}") String secretKey) {
+    public JwtService(@Value("${JWT_SECRET}") String secretKey) {
         this.secretKey = secretKey;
     }
 
