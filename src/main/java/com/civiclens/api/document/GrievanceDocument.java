@@ -3,11 +3,13 @@ package com.civiclens.api.document;
 import com.civiclens.api.model.Grievance;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+@Profile("!prod")
 @Data
 @NoArgsConstructor
 @Document(indexName = "grievances") // This is the name of the "table" in Elasticsearch

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Mono;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import com.civiclens.api.dto.StatusUpdateMessage;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
@@ -30,9 +31,8 @@ public class GrievanceService {
     private SimpMessagingTemplate messagingTemplate; // Inject the template
     @Autowired
     private EmailService emailService; // Inject the new EmailService
-    @Autowired
-    private GrievanceSearchRepository grievanceSearchRepository; // Inject the new repository
-
+    @Autowired(required = false) // Set to not required, so the app can start without it
+    private GrievanceSearchRepository grievanceSearchRepository;
 
     @Autowired // Spring's dependency injection to provide instances of the repositories
     public GrievanceService(GrievanceRepository grievanceRepository, UserRepository userRepository) {
@@ -86,7 +86,9 @@ public class GrievanceService {
 
         // --- ELASTICSEARCH SYNC ---
         // 6. Save the same grievance to Elasticsearch
-        grievanceSearchRepository.save(new GrievanceDocument(savedGrievance));
+        if (grievanceSearchRepository != null) {
+            grievanceSearchRepository.save(new GrievanceDocument(savedGrievance));
+        }
         // --- END SYNC ---
 
         // --- GAMIFICATION LOGIC GOES HERE ---
@@ -141,7 +143,9 @@ public class GrievanceService {
 
         // 6. --- ELASTICSEARCH SYNC ---
         // Also update the document in Elasticsearch
-        grievanceSearchRepository.save(new GrievanceDocument(updatedGrievance));
+        if (grievanceSearchRepository != null) {
+            grievanceSearchRepository.save(new GrievanceDocument(updatedGrievance));
+        }
         // --- END SYNC ---
 
         return updatedGrievance;
@@ -163,6 +167,7 @@ public class GrievanceService {
         return grievanceRepository.findAllByOrderByVotesDesc();
     }
 
+    @Profile("!prod")
     public List<GrievanceDocument> searchGrievances(String query) {
         return grievanceSearchRepository.findByTitleContainingOrDescriptionContaining(query, query);
     }
