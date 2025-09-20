@@ -29,9 +29,9 @@ public class GrievanceService {
     private AiCategorizationService aiCategorizationService;
     @Autowired
     private SimpMessagingTemplate messagingTemplate; // Inject the template
-    @Autowired(required = false) // Tell Spring this is not essential for startup
-//    private EmailService emailService; // Inject the new EmailService
-//    @Autowired(required = false) // Set to not required, so the app can start without it
+    @Autowired
+    private EmailService emailService;
+    @Autowired(required = false) // Set to not required, so the app can start without it
     private GrievanceSearchRepository grievanceSearchRepository;
 
     @Autowired // Spring's dependency injection to provide instances of the repositories
@@ -130,14 +130,14 @@ public class GrievanceService {
         // --- EMAIL NOTIFICATION LOGIC STARTS HERE ---
 
         // 5. If the new status is "Resolved", send an email
-//        if (emailService != null && "Resolved".equalsIgnoreCase(newStatus)) {
-//            String to = grievance.getSubmittedBy().getEmail();
-//            String subject = "Your Grievance Has Been Resolved! [ID: " + grievance.getId() + "]";
-//            String text = "Dear Citizen,\n\nWe are pleased to inform you that your grievance regarding '"
-//                    + grievance.getTitle() + "' has been resolved.\n\nThank you for using CivicLens.";
-//
-//            emailService.sendSimpleMessage(to, subject, text);
-//        }
+        if ("Resolved".equalsIgnoreCase(newStatus)) {
+            String to = grievance.getSubmittedBy().getEmail();
+            String subject = "Your Grievance Has Been Resolved! [ID: " + grievance.getId() + "]";
+            String text = "Dear Citizen,\n\nWe are pleased to inform you that your grievance regarding '"
+                    + grievance.getTitle() + "' has been resolved.\n\nThank you for using CivicLens.";
+
+            emailService.sendSimpleMessage(to, subject, text);
+        }
 
         // --- EMAIL NOTIFICATION LOGIC ENDS HERE ---
 
