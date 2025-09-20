@@ -14,7 +14,7 @@ import java.nio.file.Files;
 import java.util.Objects;
 import java.util.UUID;
 
-//@Service
+@Service
 public class FileStorageService {
 
     @Value("${AWS_S3_BUCKET_NAME}")

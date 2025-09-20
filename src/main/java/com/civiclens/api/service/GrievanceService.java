@@ -23,8 +23,8 @@ public class GrievanceService {
 
     private final GrievanceRepository grievanceRepository;
     private final UserRepository userRepository;
-//    @Autowired
-//    private FileStorageService fileStorageService;
+    @Autowired
+    private FileStorageService fileStorageService;
 //    @Autowired
 //    private AiCategorizationService aiCategorizationService;
 //    @Autowired
@@ -70,7 +70,7 @@ public class GrievanceService {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // 2. Upload the file to S3 and get its public URL
-//        String imageUrl = fileStorageService.uploadFile(imageFile);
+        String imageUrl = fileStorageService.uploadFile(imageFile);
 
         // 3. Call the AI service to get the category
 //        String category = aiCategorizationService.categorizeGrievance(grievance.getDescription(), GRIEVANCE_CATEGORIES)
@@ -78,7 +78,7 @@ public class GrievanceService {
 
         // 4. Prepare the complete grievance object
         grievance.setSubmittedBy(currentUser);
-//        grievance.setImageUrl(imageUrl);
+        grievance.setImageUrl(imageUrl);
 //        grievance.setCategory(category);
 
         // 5. Save the grievance to the database
