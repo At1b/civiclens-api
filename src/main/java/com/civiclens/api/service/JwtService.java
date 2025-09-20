@@ -18,9 +18,11 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    // TEMPORARILY HARDCODE THE SECRET FOR THIS TEST
-    private final String secretKey = "NDY4RjE2REY1RjE5OEIyM0Q5OUE3NUZDRjY3ODdERTAzOUE1QzE4QzNENzY3MzlEMDE0OEIyNDQ4NEU0MjU5Rg==";
+    private final String secretKey;
 
+    public JwtService(@Value("${JWT_SECRET}") String secretKey) {
+        this.secretKey = secretKey;
+    }
 //
 //    // Constructor to inject the secret key from application.properties
 //    public JwtService(@Value("${JWT_SECRET}") String secretKey) {
