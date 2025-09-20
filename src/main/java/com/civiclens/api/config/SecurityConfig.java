@@ -49,12 +49,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Make sure this URL is exactly correct!
-        configuration.setAllowedOrigins(Arrays.asList(
+
+        // Use setAllowedOriginPatterns to allow wildcards
+        configuration.setAllowedOriginPatterns(Arrays.asList(
                 "http://localhost:5173",
-                "https://civiclens-frontend.vercel.app", // Your main Vercel URL
-                "https://civiclens-frontend-ghs8kpnuk-atib-shaikhs-projects.vercel.app" // The specific preview URL
+                "https://civiclens-frontend.vercel.app",
+                "https://*.vercel.app" // This is the key: it allows all vercel subdomains
         ));
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
