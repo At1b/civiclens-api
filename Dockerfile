@@ -1,3 +1,5 @@
+# Force cache invalidation v2
+
 # Stage 1: Build the application using a Maven image with JDK 21
 FROM maven:3.9-eclipse-temurin-21 AS build
 
