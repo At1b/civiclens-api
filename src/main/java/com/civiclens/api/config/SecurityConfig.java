@@ -50,7 +50,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Make sure this URL is exactly correct!
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://civiclens-frontend.vercel.app"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:5173",
+                "https://civiclens-frontend.vercel.app", // Your main Vercel URL
+                "https://civiclens-frontend-ghs8kpnuk-atib-shaikhs-projects.vercel.app" // The specific preview URL
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
