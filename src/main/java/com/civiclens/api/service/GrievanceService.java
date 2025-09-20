@@ -23,15 +23,15 @@ public class GrievanceService {
 
     private final GrievanceRepository grievanceRepository;
     private final UserRepository userRepository;
-    @Autowired
-    private FileStorageService fileStorageService;
-    @Autowired
-    private AiCategorizationService aiCategorizationService;
-    @Autowired
+//    @Autowired
+//    private FileStorageService fileStorageService;
+//    @Autowired
+//    private AiCategorizationService aiCategorizationService;
+//    @Autowired
     private SimpMessagingTemplate messagingTemplate; // Inject the template
     @Autowired(required = false) // Tell Spring this is not essential for startup
-    private EmailService emailService; // Inject the new EmailService
-    @Autowired(required = false) // Set to not required, so the app can start without it
+//    private EmailService emailService; // Inject the new EmailService
+//    @Autowired(required = false) // Set to not required, so the app can start without it
     private GrievanceSearchRepository grievanceSearchRepository;
 
     @Autowired // Spring's dependency injection to provide instances of the repositories
@@ -70,16 +70,16 @@ public class GrievanceService {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // 2. Upload the file to S3 and get its public URL
-        String imageUrl = fileStorageService.uploadFile(imageFile);
+//        String imageUrl = fileStorageService.uploadFile(imageFile);
 
         // 3. Call the AI service to get the category
-        String category = aiCategorizationService.categorizeGrievance(grievance.getDescription(), GRIEVANCE_CATEGORIES)
-                .block();
+//        String category = aiCategorizationService.categorizeGrievance(grievance.getDescription(), GRIEVANCE_CATEGORIES)
+//                .block();
 
         // 4. Prepare the complete grievance object
         grievance.setSubmittedBy(currentUser);
-        grievance.setImageUrl(imageUrl);
-        grievance.setCategory(category);
+//        grievance.setImageUrl(imageUrl);
+//        grievance.setCategory(category);
 
         // 5. Save the grievance to the database
         Grievance savedGrievance = grievanceRepository.save(grievance);
@@ -130,14 +130,14 @@ public class GrievanceService {
         // --- EMAIL NOTIFICATION LOGIC STARTS HERE ---
 
         // 5. If the new status is "Resolved", send an email
-        if (emailService != null && "Resolved".equalsIgnoreCase(newStatus)) {
-            String to = grievance.getSubmittedBy().getEmail();
-            String subject = "Your Grievance Has Been Resolved! [ID: " + grievance.getId() + "]";
-            String text = "Dear Citizen,\n\nWe are pleased to inform you that your grievance regarding '"
-                    + grievance.getTitle() + "' has been resolved.\n\nThank you for using CivicLens.";
-
-            emailService.sendSimpleMessage(to, subject, text);
-        }
+//        if (emailService != null && "Resolved".equalsIgnoreCase(newStatus)) {
+//            String to = grievance.getSubmittedBy().getEmail();
+//            String subject = "Your Grievance Has Been Resolved! [ID: " + grievance.getId() + "]";
+//            String text = "Dear Citizen,\n\nWe are pleased to inform you that your grievance regarding '"
+//                    + grievance.getTitle() + "' has been resolved.\n\nThank you for using CivicLens.";
+//
+//            emailService.sendSimpleMessage(to, subject, text);
+//        }
 
         // --- EMAIL NOTIFICATION LOGIC ENDS HERE ---
 

@@ -18,12 +18,14 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private final String secretKey; // Changed from static final
+    // TEMPORARILY HARDCODE THE SECRET FOR THIS TEST
+    private final String secretKey = "NDY4RjE2REY1RjE5OEIyM0Q5OUE3NUZDRjY3ODdERTAzOUE1QzE4QzNENzY3MzlEMDE0OEIyNDQ4NEU0MjU5Rg==";
 
-    // Constructor to inject the secret key from application.properties
-    public JwtService(@Value("${JWT_SECRET}") String secretKey) {
-        this.secretKey = secretKey;
-    }
+//
+//    // Constructor to inject the secret key from application.properties
+//    public JwtService(@Value("${JWT_SECRET}") String secretKey) {
+//        this.secretKey = secretKey;
+//    }
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -70,7 +72,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(this.secretKey); // Use the injected key
+        byte[] keyBytes = Decoders.BASE64.decode(this.secretKey); // This will now use the hardcoded key
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
