@@ -3,6 +3,7 @@ package com.civiclens.api.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod; // <-- Add this import
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,7 +14,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import static org.springframework.security.config.Customizer.withDefaults;
-import org.springframework.http.HttpMethod;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +32,10 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // This is the final, correct list of public endpoints
+                        // This new rule explicitly allows all CORS preflight requests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**", "/ws/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/grievances/**").permitAll() // Allow all GET requests for grievances
+                        .requestMatchers(HttpMethod.GET, "/api/grievances/**").permitAll()
                         .requestMatchers("/api/municipal/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -48,7 +49,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://civiclens-frontend.vercel.app/"));
+        // Make sure this URL is exactly correct!
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://civiclens-frontend.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
