@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-//@Service
+@Service
 public class AiCategorizationService {
     private final WebClient webClient;
     private final String huggingFaceApiKey;

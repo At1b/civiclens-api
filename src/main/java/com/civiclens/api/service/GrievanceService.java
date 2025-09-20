@@ -25,9 +25,9 @@ public class GrievanceService {
     private final UserRepository userRepository;
     @Autowired
     private FileStorageService fileStorageService;
-//    @Autowired
-//    private AiCategorizationService aiCategorizationService;
-//    @Autowired
+    @Autowired
+    private AiCategorizationService aiCategorizationService;
+    @Autowired
     private SimpMessagingTemplate messagingTemplate; // Inject the template
     @Autowired(required = false) // Tell Spring this is not essential for startup
 //    private EmailService emailService; // Inject the new EmailService
@@ -73,13 +73,13 @@ public class GrievanceService {
         String imageUrl = fileStorageService.uploadFile(imageFile);
 
         // 3. Call the AI service to get the category
-//        String category = aiCategorizationService.categorizeGrievance(grievance.getDescription(), GRIEVANCE_CATEGORIES)
-//                .block();
+        String category = aiCategorizationService.categorizeGrievance(grievance.getDescription(), GRIEVANCE_CATEGORIES)
+                .block();
 
         // 4. Prepare the complete grievance object
         grievance.setSubmittedBy(currentUser);
         grievance.setImageUrl(imageUrl);
-//        grievance.setCategory(category);
+        grievance.setCategory(category);
 
         // 5. Save the grievance to the database
         Grievance savedGrievance = grievanceRepository.save(grievance);
